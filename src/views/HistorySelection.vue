@@ -67,7 +67,7 @@ const formatDate = (date) => {
             <h2 class="text-xl font-semibold text-gray-800">第 {{ record.BacktestTimes }} 次回测</h2>
             <span
                 class="text-lg font-medium"
-                :class="record.TotalProfit >= 0 ? 'text-green-600' : 'text-red-600'"
+                :class="record.TotalProfit >= 0 ? 'text-red-600' : 'text-green-600'"
             >
               {{ formatNumber(record.TotalProfit) }}
             </span>

@@ -2,8 +2,9 @@ import axios from 'axios'
 import { useErrorStore } from '../stores/error'
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000',
-  timeout: 10000,
+  baseURL: 'https://wufeng98.cn/stockApi',
+  // baseURL: 'http://localhost:3000',
+  timeout: 50*1000,
 })
 
 // 错误消息映射
@@ -61,6 +62,11 @@ export const stockApi = {
   // 设置Cookie
   setCookie(cookie) {
     return api.post('/setCookie', { cookie })
+  },
+
+  // 设置Token
+  setToken(token) {
+    return api.post('/setToken', { token })
   },
 
   // 获取回测策略类型

@@ -3,6 +3,7 @@ import { defineProps, defineEmits, computed } from 'vue'
 import { getRandomGradient } from '../utils/colors'
 import { useStrategyStore } from '../stores/strategy'
 import { ref, watch } from 'vue'
+import {format} from "date-fns";
 
 const strategyStore = useStrategyStore()
 const selectedType = ref('')
@@ -87,6 +88,10 @@ const close = () => {
           <div class="flex justify-between">
             <span class="text-gray-600">最新价格：</span>
             <span class="font-medium">{{ stock.lastPrice }}</span>
+          </div>
+          <div class="flex justify-between mb-2">
+            <span class="text-gray-600">推荐日期：</span>
+            <span class="font-medium">{{ format(new Date(stock.date), 'yyyy-MM-dd') }}</span>
           </div>
         </div>
       </div>

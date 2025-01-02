@@ -40,6 +40,11 @@ setInterval(() => {
 const handleParameterSubmit = (value) => {
   notificationStore.showNotification('Cookie设置成功', 'success')
 }
+const handleTokenSubmit = (value) => {
+  notificationStore.showNotification('Token设置成功', 'success')
+}
+
+
 
 const getStockRecommendation = async () => {
   try {
@@ -107,7 +112,7 @@ const runBacktest = async () => {
       </div>
 
       <!-- 参数设置区域 -->
-      <ParameterSettings @submit="handleParameterSubmit" />
+      <ParameterSettings @submit="handleParameterSubmit" @token-submit="handleTokenSubmit" />
 
       <!-- 功能区域 -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

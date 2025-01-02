@@ -15,6 +15,7 @@ onMounted(async () => {
     const { data } = await stockApi.getMockStockHolding(route.params.times)
     holdings.value = data
   } catch (error) {
+    console.log(error)
     errorStore.showError('获取回测详情失败')
   } finally {
     isLoading.value = false
@@ -97,11 +98,11 @@ const trades = ref(holdings.value.filter(h => h.sellDate))
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ holding.amount }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm"
-                    :class="holding.profit >= 0 ? 'text-green-600' : 'text-red-600'">
+                    :class="holding.profit >= 0 ? 'text-red-600' : 'text-green-600'">
                   {{ holding.profit ? formatNumber(holding.profit) : '-' }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm"
-                    :class="holding.profitRate >= 0 ? 'text-green-600' : 'text-red-600'">
+                    :class="holding.profitRate >= 0 ? 'text-red-600' : 'text-green-600'">
                   {{ holding.profitRate ? formatPercent(holding.profitRate/100) : '-' }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

@@ -84,7 +84,7 @@ const formatNumber = (num) => {
         class="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-lg shadow-sm border border-green-100 hover:shadow-md transition-shadow duration-300">
       <h3 class="text-sm font-medium text-gray-500 mb-1">总收益</h3>
       <div class="flex items-baseline">
-        <span class="text-2xl font-semibold" :class="totalProfit >= 0 ? 'text-green-600' : 'text-red-600'">
+        <span class="text-2xl font-semibold" :class="totalProfit >= 0 ? 'text-red-600' : 'text-green-600'">
           {{ formatNumber(totalProfit) }}
         </span>
         <span class="ml-2 text-sm text-gray-500">元</span>
@@ -121,6 +121,17 @@ const formatNumber = (num) => {
           {{ maxConsecutiveLosses }}
         </span>
         <span class="ml-2 text-sm text-gray-500">次</span>
+      </div>
+    </div>
+
+    <div
+        class="bg-gradient-to-br from-red-50 to-purple-50 p-6 rounded-lg shadow-sm border border-amber-100 hover:shadow-md transition-shadow duration-300">
+      <h3 class="text-sm font-medium text-gray-500 mb-1">初始资金</h3>
+      <div class="flex items-baseline">
+        <span class="text-2xl font-semibold">
+          {{ 2*31.73 }}亿
+        </span>
+        <span class="ml-2 text-sm text-gray-500">元</span>
       </div>
     </div>
   </div>
