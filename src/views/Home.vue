@@ -12,7 +12,8 @@ const strategyStore = useStrategyStore()
 
 // 日期相关状态
 const startDate = ref('')
-const minDate = '2017-01-01'
+const endDate = ref('')
+const minDate = '2010-01-01'
 const maxDate = new Date(Date.now() - 86400000).toISOString().split('T')[0] // Yesterday
 
 // UI 状态
@@ -79,6 +80,14 @@ const runBacktest = async () => {
     notificationStore.showNotification('请选择回测开始日期', 'warning')
     return
   }
+  if (!endDate.value) {
+    notificationStore.showNotification('请选择回测结束日期', 'warning')
+    return
+  }
+  if (startDate.value >= endDate.value) {
+    notificationStore.showNotification('回测结束日期必须大于回测起始日期', 'warning')
+    return
+  }
   if (!selectedBacktestStrategy.value) {
     notificationStore.showNotification('请选择回测策略', 'warning')
     return
@@ -87,6 +96,7 @@ const runBacktest = async () => {
   try {
     await stockApi.startBackTest({
       startDate: startDate.value,
+      endDate: endDate.value,
       backTestType: strategyStore.types.indexOf(selectedBacktestStrategy.value) + 1
     })
     notificationStore.showNotification('回测已启动', 'success')
@@ -182,6 +192,16 @@ const runBacktest = async () => {
               />
             </div>
             <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700">选择回测结束日期</label>
+              <input
+                  type="date"
+                  v-model="endDate"
+                  :min="minDate"
+                  :max="maxDate"
+                  class="input w-full"
+              />
+            </div>
+            <div class="space-y-2">
               <label class="block text-sm font-medium text-gray-700">选择回测策略</label>
               <select
                   v-model="selectedBacktestStrategy"
@@ -196,7 +216,7 @@ const runBacktest = async () => {
             <button
                 @click="runBacktest"
                 class="w-full btn bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                :disabled="!selectedBacktestStrategy || !startDate"
+                :disabled="!selectedBacktestStrategy || !startDate || !endDate"
             >
               开始回测分析
             </button>

@@ -13,7 +13,11 @@ const totalTrades = computed(() => props.trades.length)
 
 // 计算盈利次数
 const profitableTrades = computed(() =>
-    props.trades.filter(trade => (trade.profit || 0) >= 0).length
+    props.trades.filter(trade => (trade.profit || 0) > 0).length
+)
+
+const finishtTrades = computed(() =>
+    props.trades.filter(trade => !!trade.profit).length
 )
 
 // 计算总收益
@@ -107,7 +111,7 @@ const formatNumber = (num) => {
       <h3 class="text-sm font-medium text-gray-500 mb-1">胜率</h3>
       <div class="flex items-baseline">
         <span class="text-2xl font-semibold">
-          {{ formatNumber((profitableTrades / totalTrades) * 100) }}
+          {{ formatNumber((profitableTrades / finishtTrades) * 100) }}
         </span>
         <span class="ml-2 text-sm text-gray-500">%</span>
       </div>
