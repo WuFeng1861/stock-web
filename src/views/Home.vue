@@ -23,6 +23,13 @@ const currentTime = ref(format(new Date(), 'yyyy年MM月dd日 HH:mm:ss'))
 const selectedStrategy = ref('')
 const selectedBacktestStrategy = ref('')
 const shouldUpdate = ref(false)
+const maxStocks = ref(3174)
+const initialAmount = ref(100000)
+const stopBuyRatio = ref(50)
+const enableMaxStocks = ref(false)
+const enableInitialAmount = ref(false)
+const enableStopBuyRatio = ref(false)
+const showMoreSettings = ref(false)
 
 // 推荐股票数据
 const recommendedStocks = ref([])
@@ -97,7 +104,10 @@ const runBacktest = async () => {
     await stockApi.startBackTest({
       startDate: startDate.value,
       endDate: endDate.value,
-      backTestType: strategyStore.types.indexOf(selectedBacktestStrategy.value) + 1
+      backTestType: strategyStore.types.indexOf(selectedBacktestStrategy.value) + 1,
+      maxStocksHolds: Number(maxStocks.value),
+      initialPerAmount: Number(initialAmount.value),
+      stopBuyRatio: Number(stopBuyRatio.value)
     })
     notificationStore.showNotification('回测已启动', 'success')
   } catch (error) {}
@@ -212,6 +222,81 @@ const runBacktest = async () => {
                   {{ type }}
                 </option>
               </select>
+            </div>
+            <button
+                @click="showMoreSettings = !showMoreSettings"
+                class="w-full text-sm text-gray-600 hover:text-gray-800 flex items-center justify-center gap-1 py-2"
+            >
+              {{ showMoreSettings ? '收起更多设置' : '显示更多设置' }}
+              <svg
+                  class="w-4 h-4 transform transition-transform"
+                  :class="{ 'rotate-180': showMoreSettings }"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+              >
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <div v-show="showMoreSettings" class="space-y-4 pt-2">
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">最大购买股票数量</label>
+                <div class="flex items-center gap-2">
+                  <input
+                      type="checkbox"
+                      v-model="enableMaxStocks"
+                      class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                  />
+                  <input
+                      type="number"
+                      v-model="maxStocks"
+                      min="1"
+                      max="100"
+                      class="input flex-1"
+                      placeholder="请输入最大购买股票数量"
+                      :disabled="!enableMaxStocks"
+                  />
+                </div>
+              </div>
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">每只股票初始金额（元）</label>
+                <div class="flex items-center gap-2">
+                  <input
+                      type="checkbox"
+                      v-model="enableInitialAmount"
+                      class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                  />
+                  <input
+                      type="number"
+                      v-model="initialAmount"
+                      min="100000"
+                      step="100000"
+                      class="input flex-1"
+                      placeholder="请输入每只股票初始金额"
+                      :disabled="!enableInitialAmount"
+                  />
+                </div>
+              </div>
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">停止购买比例（%）</label>
+                <div class="flex items-center gap-2">
+                  <input
+                      type="checkbox"
+                      v-model="enableStopBuyRatio"
+                      class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                  />
+                  <input
+                      type="number"
+                      v-model="stopBuyRatio"
+                      min="0"
+                      max="100"
+                      step="1"
+                      class="input flex-1"
+                      placeholder="请输入停止购买比例"
+                      :disabled="!enableStopBuyRatio"
+                  />
+                </div>
+              </div>
             </div>
             <button
                 @click="runBacktest"
